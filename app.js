@@ -1,5 +1,5 @@
 //jshint esversion:6
-
+require('dotenv').config()
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
@@ -18,9 +18,7 @@ const userSchema = new mongoose.Schema({
   password:String
 });
 
-const secret = "thisiswayofencryption.";
-
-userSchema.plugin(encrypt, { secret:secret , encryptedFields: ['password'] });
+userSchema.plugin(encrypt, { secret:process.env.SECRET , encryptedFields: ['password'] });
 
 const User = new  mongoose.model("user",userSchema);
 
@@ -64,7 +62,7 @@ app.post("/login",function(req,res){
 })
 
 
-app.listen(3000,function(req,res) {
+app.listen(process.env.PORT || 3000 ,function(req,res) {
   console.log("server started at 3000 successfully");
 })
 
